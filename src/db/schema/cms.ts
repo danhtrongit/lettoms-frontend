@@ -7,6 +7,7 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
+import type { Data } from "@puckeditor/core";
 
 // ---- Site settings (single row, key="site") ----
 export type SocialLinks = {
@@ -90,6 +91,9 @@ export const pages = pgTable("pages", {
   title: text("title").notNull(),
   status: pageStatus("status").notNull().default("draft"),
   blocks: jsonb("blocks").$type<PageBlock[]>().notNull().default([]),
+  // New Puck-based builder data. `blocks` is the legacy format, kept until
+  // the final cleanup migration; pages with non-null `content` use Puck.
+  content: jsonb("content").$type<Data>(),
   seoTitle: text("seo_title"),
   seoDescription: text("seo_description"),
   ogImage: text("og_image"),

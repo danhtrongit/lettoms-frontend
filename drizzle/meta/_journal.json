@@ -15,6 +15,13 @@
       "when": 1781237850222,
       "tag": "0001_harsh_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1781246549972,
+      "tag": "0002_add_pages_content_column",
+      "breakpoints": true
     }
   ]
 }

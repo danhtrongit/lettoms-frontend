@@ -17,6 +17,9 @@ import { ImageWidget } from "@/components/cms/widgets/image-widget";
 import { GalleryWidget } from "@/components/cms/widgets/gallery-widget";
 import { VideoEmbedWidget } from "@/components/cms/widgets/video-embed-widget";
 import { LogoMarqueeWidget } from "@/components/cms/widgets/logo-marquee-widget";
+import { ProductGridClient } from "@/components/cms/widgets/product-grid-widget.client";
+import { ProductCarouselClient } from "@/components/cms/widgets/product-carousel-widget.client";
+import { FeaturedCategoriesClient } from "@/components/cms/widgets/featured-categories-widget.client";
 import { colorField } from "@/lib/builder/fields/color-field";
 import { richTextField } from "@/lib/builder/fields/richtext-field";
 import { imageField } from "@/lib/builder/fields/image-field";
@@ -32,7 +35,7 @@ export const clientConfig: Config = {
     layout: { title: "Bố cục", components: ["section", "columns", "spacer", "divider"] },
     basic: { title: "Cơ bản", components: ["heading", "richText", "button", "iconList", "faqAccordion", "testimonial"] },
     media: { title: "Media", components: ["hero", "bannerImage", "image", "gallery", "videoEmbed", "logoMarquee"] },
-    commerce: { title: "Thương mại", components: [] },
+    commerce: { title: "Thương mại", components: ["productGrid", "productCarousel", "featuredCategories"] },
     marketing: { title: "Marketing", components: [] },
   },
   components: {
@@ -364,6 +367,70 @@ export const clientConfig: Config = {
       defaultProps: { heading: "Đối tác", images: [] },
       render: ({ heading, images }) => (
         <LogoMarqueeWidget heading={heading} images={images} />
+      ),
+    },
+    productGrid: {
+      label: "Lưới sản phẩm",
+      fields: {
+        heading: { type: "text", label: "Tiêu đề" },
+        href: { type: "text", label: "Link xem tất cả" },
+        flag: {
+          type: "select",
+          label: "Bộ lọc sản phẩm",
+          options: [
+            { label: "Mới", value: "new" },
+            { label: "Bán chạy", value: "bestseller" },
+            { label: "Giảm giá", value: "sale" },
+            { label: "Giới hạn", value: "limited" },
+          ],
+        },
+        limit: { type: "number", label: "Số sản phẩm", min: 1 },
+      },
+      defaultProps: { heading: "Sản phẩm nổi bật", href: "", flag: "bestseller", limit: 4 },
+      render: ({ heading, href, flag, limit }) => (
+        <ProductGridClient heading={heading} href={href} flag={flag} limit={limit} />
+      ),
+    },
+    productCarousel: {
+      label: "Băng chuyền sản phẩm",
+      fields: {
+        heading: { type: "text", label: "Tiêu đề" },
+        flag: {
+          type: "select",
+          label: "Bộ lọc sản phẩm",
+          options: [
+            { label: "Mới", value: "new" },
+            { label: "Bán chạy", value: "bestseller" },
+            { label: "Giảm giá", value: "sale" },
+            { label: "Giới hạn", value: "limited" },
+          ],
+        },
+        limit: { type: "number", label: "Số sản phẩm", min: 1 },
+      },
+      defaultProps: { heading: "Sản phẩm mới", flag: "new", limit: 8 },
+      render: ({ heading, flag, limit }) => (
+        <ProductCarouselClient heading={heading} flag={flag} limit={limit} />
+      ),
+    },
+    featuredCategories: {
+      label: "Danh mục nổi bật",
+      fields: {
+        heading: { type: "text", label: "Tiêu đề" },
+        gender: {
+          type: "select",
+          label: "Giới tính",
+          options: [
+            { label: "Nữ", value: "nu" },
+            { label: "Nam", value: "nam" },
+            { label: "Trẻ Em", value: "tre-em" },
+            { label: "Em Bé", value: "em-be" },
+          ],
+        },
+        limit: { type: "number", label: "Số danh mục", min: 1 },
+      },
+      defaultProps: { heading: "Danh mục", gender: "nu", limit: 6 },
+      render: ({ heading, gender, limit }) => (
+        <FeaturedCategoriesClient heading={heading} gender={gender} limit={limit} />
       ),
     },
   },

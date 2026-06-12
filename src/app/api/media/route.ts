@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
+import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import { users } from "@/db/schema";
 import { listMedia, createMedia } from "@/lib/repos/media.repo";
 import { storage } from "@/lib/storage";
 import { requireStaff } from "@/lib/auth/rbac";
@@ -23,6 +26,18 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   await requireStaff();
   const user = await getCurrentUser();
+
+  // The JWT can outlive its user row (e.g. after a DB reseed) — inserting
+  // media with a dangling created_by violates the FK and used to 500.
+  const exists = user?.id
+    ? await db.query.users.findFirst({ where: eq(users.id, user.id), columns: { id: true } })
+    : null;
+  if (!exists) {
+    return NextResponse.json(
+      { error: "Phiên đăng nhập không còn hợp lệ. Vui lòng đăng xuất và đăng nhập lại." },
+      { status: 401 }
+    );
+  }
 
   const form = await req.formData();
   const file = form.get("file");

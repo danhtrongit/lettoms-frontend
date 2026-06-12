@@ -15,7 +15,7 @@ export function TestimonialWidget({
     <section className="container-page py-8">
       <figure className="mx-auto max-w-2xl text-center">
         <blockquote className="text-xl font-medium leading-relaxed">
-          "{quote}"
+          “{quote}”
         </blockquote>
         <figcaption className="mt-4 flex items-center justify-center gap-3">
           {avatar && (

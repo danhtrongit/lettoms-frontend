@@ -22,6 +22,11 @@ import { ProductCarouselClient } from "@/components/cms/widgets/product-carousel
 import { FeaturedCategoriesClient } from "@/components/cms/widgets/featured-categories-widget.client";
 import { CountdownWidget } from "@/components/cms/widgets/countdown-widget";
 import { NewsletterWidget } from "@/components/cms/widgets/newsletter-widget";
+import { HeroCarouselWidget } from "@/components/cms/widgets/hero-carousel-widget";
+import { PromoBannerWidget } from "@/components/cms/widgets/promo-banner-widget";
+import { ArticleStripClient } from "@/components/cms/widgets/article-strip-widget.client";
+import { CategoryTilesWidget } from "@/components/cms/widgets/category-tiles-widget";
+import { HtmlEmbedWidget } from "@/components/cms/widgets/html-embed-widget";
 import { colorField } from "@/lib/builder/fields/color-field";
 import { richTextField } from "@/lib/builder/fields/richtext-field";
 import { imageField } from "@/lib/builder/fields/image-field";
@@ -36,9 +41,9 @@ export const clientConfig: Config = {
   categories: {
     layout: { title: "Bố cục", components: ["section", "columns", "spacer", "divider"] },
     basic: { title: "Cơ bản", components: ["heading", "richText", "button", "iconList", "faqAccordion", "testimonial"] },
-    media: { title: "Media", components: ["hero", "bannerImage", "image", "gallery", "videoEmbed", "logoMarquee"] },
-    commerce: { title: "Thương mại", components: ["productGrid", "productCarousel", "featuredCategories"] },
-    marketing: { title: "Marketing", components: ["countdown", "newsletter"] },
+    media: { title: "Media", components: ["hero", "bannerImage", "image", "gallery", "videoEmbed", "logoMarquee", "heroCarousel"] },
+    commerce: { title: "Thương mại", components: ["productGrid", "productCarousel", "featuredCategories", "categoryTiles"] },
+    marketing: { title: "Marketing", components: ["countdown", "newsletter", "promoBanner", "articleStrip", "htmlEmbed"] },
   },
   components: {
     section: {
@@ -463,6 +468,90 @@ export const clientConfig: Config = {
       },
       render: ({ heading, subheading, placeholder, buttonLabel }) => (
         <NewsletterWidget heading={heading} subheading={subheading} placeholder={placeholder} buttonLabel={buttonLabel} />
+      ),
+    },
+    heroCarousel: {
+      label: "Băng chuyền hero",
+      fields: {
+        slides: {
+          type: "array",
+          label: "Slide",
+          arrayFields: {
+            image: imageField("Ảnh"),
+            alt: { type: "text", label: "Alt" },
+            href: { type: "text", label: "Liên kết" },
+          },
+          defaultItemProps: { image: "", alt: "", href: "/" },
+          getItemSummary: (_item: { image?: string }, i?: number) => `Ảnh ${(i ?? 0) + 1}`,
+        },
+        autoplaySeconds: { type: "number", label: "Tự động chuyển (giây)", min: 2 },
+      },
+      defaultProps: { slides: [], autoplaySeconds: 5 },
+      render: ({ slides, autoplaySeconds }) => (
+        <HeroCarouselWidget slides={slides} autoplaySeconds={autoplaySeconds} />
+      ),
+    },
+    promoBanner: {
+      label: "Banner khuyến mãi",
+      fields: {
+        title: { type: "text", label: "Tiêu đề" },
+        subtitle: { type: "text", label: "Phụ đề" },
+        cta: { type: "text", label: "Nhãn nút" },
+        href: { type: "text", label: "Liên kết" },
+        from: colorField("Màu bắt đầu"),
+        to: colorField("Màu kết thúc"),
+      },
+      defaultProps: {
+        title: "Ưu Đãi Giá Mới",
+        subtitle: "Giảm đến 40% cho các sản phẩm chọn lọc.",
+        cta: "Xem khuyến mãi",
+        href: "/uu-dai/khuyen-mai",
+        from: "#232C66",
+        to: "#3A6EA5",
+      },
+      render: ({ title, subtitle, cta, href, from, to }) => (
+        <PromoBannerWidget title={title} subtitle={subtitle} cta={cta} href={href} from={from} to={to} />
+      ),
+    },
+    articleStrip: {
+      label: "Dải bài viết",
+      fields: {
+        heading: { type: "text", label: "Tiêu đề" },
+        limit: { type: "number", label: "Số bài viết", min: 1 },
+      },
+      defaultProps: { heading: "Tin tức & Câu chuyện", limit: 3 },
+      render: ({ heading, limit }) => (
+        <ArticleStripClient heading={heading} limit={limit} />
+      ),
+    },
+    categoryTiles: {
+      label: "Ô danh mục",
+      fields: {
+        tiles: {
+          type: "array",
+          label: "Danh mục",
+          arrayFields: {
+            image: imageField("Ảnh"),
+            label: { type: "text", label: "Nhãn" },
+            href: { type: "text", label: "Liên kết" },
+          },
+          defaultItemProps: { image: "", label: "", href: "/" },
+          getItemSummary: (item: { label?: string }) => item.label || "Danh mục",
+        },
+      },
+      defaultProps: { tiles: [] },
+      render: ({ tiles }) => (
+        <CategoryTilesWidget tiles={tiles} />
+      ),
+    },
+    htmlEmbed: {
+      label: "Nhúng HTML",
+      fields: {
+        html: { type: "textarea", label: "HTML" },
+      },
+      defaultProps: { html: "" },
+      render: ({ html }) => (
+        <HtmlEmbedWidget html={html} />
       ),
     },
   },

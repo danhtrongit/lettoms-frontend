@@ -20,6 +20,11 @@ import { ProductCarouselServer } from "@/components/cms/widgets/product-carousel
 import { FeaturedCategoriesServer } from "@/components/cms/widgets/featured-categories-widget";
 import { CountdownWidget } from "@/components/cms/widgets/countdown-widget";
 import { NewsletterWidget } from "@/components/cms/widgets/newsletter-widget";
+import { HeroCarouselWidget } from "@/components/cms/widgets/hero-carousel-widget";
+import { PromoBannerWidget } from "@/components/cms/widgets/promo-banner-widget";
+import { ArticleStripServer } from "@/components/cms/widgets/article-strip-widget";
+import { CategoryTilesWidget } from "@/components/cms/widgets/category-tiles-widget";
+import { HtmlEmbedWidget } from "@/components/cms/widgets/html-embed-widget";
 
 /**
  * Render-only config for the public site (<Render> in RSC).
@@ -130,6 +135,31 @@ export const serverConfig: Config = {
     newsletter: {
       render: ({ heading, subheading, placeholder, buttonLabel }) => (
         <NewsletterWidget heading={heading} subheading={subheading} placeholder={placeholder} buttonLabel={buttonLabel} />
+      ),
+    },
+    heroCarousel: {
+      render: ({ slides, autoplaySeconds }) => (
+        <HeroCarouselWidget slides={slides} autoplaySeconds={autoplaySeconds} />
+      ),
+    },
+    promoBanner: {
+      render: ({ title, subtitle, cta, href, from, to }) => (
+        <PromoBannerWidget title={title} subtitle={subtitle} cta={cta} href={href} from={from} to={to} />
+      ),
+    },
+    articleStrip: {
+      render: ({ heading, limit }) => (
+        <ArticleStripServer heading={heading} limit={limit} />
+      ),
+    },
+    categoryTiles: {
+      render: ({ tiles }) => (
+        <CategoryTilesWidget tiles={tiles} />
+      ),
+    },
+    htmlEmbed: {
+      render: ({ html }) => (
+        <HtmlEmbedWidget html={html} />
       ),
     },
   },

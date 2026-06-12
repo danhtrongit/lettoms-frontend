@@ -73,12 +73,7 @@ export function PageEditor({ page }: PageEditorProps) {
           { width: 1280, label: "Desktop", icon: <MonitorIcon className="size-4" /> },
         ]}
         overrides={{
-          headerActions: ({ children }) => (
-            <>
-              <HeaderActions page={page} />
-              {children}
-            </>
-          ),
+          headerActions: () => <HeaderActions page={page} />,
         }}
       />
     </div>

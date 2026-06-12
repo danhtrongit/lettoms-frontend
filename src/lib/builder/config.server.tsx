@@ -9,6 +9,12 @@ import { RichTextServerWidget } from "@/components/cms/widgets/rich-text-server-
 import { IconListWidget } from "@/components/cms/widgets/icon-list-widget";
 import { FaqWidget } from "@/components/cms/widgets/faq-widget";
 import { TestimonialWidget } from "@/components/cms/widgets/testimonial-widget";
+import { HeroWidget } from "@/components/cms/widgets/hero-widget";
+import { BannerImageWidget } from "@/components/cms/widgets/banner-image-widget";
+import { ImageWidget } from "@/components/cms/widgets/image-widget";
+import { GalleryWidget } from "@/components/cms/widgets/gallery-widget";
+import { VideoEmbedWidget } from "@/components/cms/widgets/video-embed-widget";
+import { LogoMarqueeWidget } from "@/components/cms/widgets/logo-marquee-widget";
 
 /**
  * Render-only config for the public site (<Render> in RSC).
@@ -56,6 +62,44 @@ export const serverConfig: Config = {
     testimonial: {
       render: ({ quote, author, role, avatar }) => (
         <TestimonialWidget quote={quote} author={author} role={role} avatar={avatar} />
+      ),
+    },
+    hero: {
+      render: ({ image, heading, subheading, ctaLabel, ctaHref, align, height }) => (
+        <HeroWidget
+          image={image}
+          heading={heading}
+          subheading={subheading}
+          ctaLabel={ctaLabel}
+          ctaHref={ctaHref}
+          align={align}
+          height={height}
+        />
+      ),
+    },
+    bannerImage: {
+      render: ({ image, href, alt, ratio }) => (
+        <BannerImageWidget image={image} href={href} alt={alt} ratio={ratio} />
+      ),
+    },
+    image: {
+      render: ({ src, alt, caption, width }) => (
+        <ImageWidget src={src} alt={alt} caption={caption} width={width} />
+      ),
+    },
+    gallery: {
+      render: ({ images, columns }) => (
+        <GalleryWidget images={images} columns={columns} />
+      ),
+    },
+    videoEmbed: {
+      render: ({ url, ratio }) => (
+        <VideoEmbedWidget url={url} ratio={ratio} />
+      ),
+    },
+    logoMarquee: {
+      render: ({ heading, images }) => (
+        <LogoMarqueeWidget heading={heading} images={images} />
       ),
     },
   },

@@ -11,6 +11,12 @@ import { RichTextClientWidget } from "@/components/cms/widgets/rich-text-client-
 import { IconListWidget } from "@/components/cms/widgets/icon-list-widget";
 import { FaqWidget } from "@/components/cms/widgets/faq-widget";
 import { TestimonialWidget } from "@/components/cms/widgets/testimonial-widget";
+import { HeroWidget } from "@/components/cms/widgets/hero-widget";
+import { BannerImageWidget } from "@/components/cms/widgets/banner-image-widget";
+import { ImageWidget } from "@/components/cms/widgets/image-widget";
+import { GalleryWidget } from "@/components/cms/widgets/gallery-widget";
+import { VideoEmbedWidget } from "@/components/cms/widgets/video-embed-widget";
+import { LogoMarqueeWidget } from "@/components/cms/widgets/logo-marquee-widget";
 import { colorField } from "@/lib/builder/fields/color-field";
 import { richTextField } from "@/lib/builder/fields/richtext-field";
 import { imageField } from "@/lib/builder/fields/image-field";
@@ -25,7 +31,7 @@ export const clientConfig: Config = {
   categories: {
     layout: { title: "Bố cục", components: ["section", "columns", "spacer", "divider"] },
     basic: { title: "Cơ bản", components: ["heading", "richText", "button", "iconList", "faqAccordion", "testimonial"] },
-    media: { title: "Media", components: [] },
+    media: { title: "Media", components: ["hero", "bannerImage", "image", "gallery", "videoEmbed", "logoMarquee"] },
     commerce: { title: "Thương mại", components: [] },
     marketing: { title: "Marketing", components: [] },
   },
@@ -206,6 +212,158 @@ export const clientConfig: Config = {
       },
       render: ({ quote, author, role, avatar }) => (
         <TestimonialWidget quote={quote} author={author} role={role} avatar={avatar} />
+      ),
+    },
+    hero: {
+      label: "Hero Banner",
+      fields: {
+        image: imageField("Ảnh nền"),
+        heading: { type: "text", label: "Tiêu đề" },
+        subheading: { type: "text", label: "Phụ đề" },
+        ctaLabel: { type: "text", label: "Nhãn nút" },
+        ctaHref: { type: "text", label: "Link nút" },
+        align: {
+          type: "select",
+          label: "Căn nội dung",
+          options: [
+            { value: "left", label: "Trái" },
+            { value: "center", label: "Giữa" },
+            { value: "right", label: "Phải" },
+          ],
+        },
+        height: {
+          type: "select",
+          label: "Chiều cao",
+          options: [
+            { value: "medium", label: "Vừa" },
+            { value: "large", label: "Lớn" },
+            { value: "full", label: "Toàn màn hình" },
+          ],
+        },
+      },
+      defaultProps: {
+        image: "",
+        heading: "Tiêu đề nổi bật",
+        subheading: "Mô tả ngắn gọn",
+        ctaLabel: "Mua ngay",
+        ctaHref: "/nu",
+        align: "center",
+        height: "large",
+      },
+      render: ({ image, heading, subheading, ctaLabel, ctaHref, align, height }) => (
+        <HeroWidget
+          image={image}
+          heading={heading}
+          subheading={subheading}
+          ctaLabel={ctaLabel}
+          ctaHref={ctaHref}
+          align={align}
+          height={height}
+        />
+      ),
+    },
+    bannerImage: {
+      label: "Banner ảnh",
+      fields: {
+        image: imageField("Ảnh"),
+        href: { type: "text", label: "Link" },
+        alt: { type: "text", label: "Alt" },
+        ratio: {
+          type: "select",
+          label: "Tỉ lệ",
+          options: [
+            { value: "16/6", label: "16:6 (rộng)" },
+            { value: "16/9", label: "16:9" },
+            { value: "21/9", label: "21:9 (siêu rộng)" },
+            { value: "1/1", label: "1:1 (vuông)" },
+          ],
+        },
+      },
+      defaultProps: { image: "", href: "/", alt: "", ratio: "16/6" },
+      render: ({ image, href, alt, ratio }) => (
+        <BannerImageWidget image={image} href={href} alt={alt} ratio={ratio} />
+      ),
+    },
+    image: {
+      label: "Hình ảnh",
+      fields: {
+        src: imageField("Ảnh"),
+        alt: { type: "text", label: "Alt" },
+        caption: { type: "text", label: "Chú thích" },
+        width: {
+          type: "select",
+          label: "Chiều rộng",
+          options: [
+            { value: "full", label: "Toàn bộ" },
+            { value: "wide", label: "Rộng" },
+            { value: "normal", label: "Vừa" },
+          ],
+        },
+      },
+      defaultProps: { src: "", alt: "", caption: "", width: "full" },
+      render: ({ src, alt, caption, width }) => (
+        <ImageWidget src={src} alt={alt} caption={caption} width={width} />
+      ),
+    },
+    gallery: {
+      label: "Thư viện ảnh",
+      fields: {
+        images: {
+          type: "array",
+          label: "Ảnh",
+          arrayFields: { src: imageField("Ảnh") },
+          defaultItemProps: { src: "" },
+          getItemSummary: (_item: { src?: string }, i?: number) => `Ảnh ${(i ?? 0) + 1}`,
+        },
+        columns: {
+          type: "select",
+          label: "Số cột",
+          options: [
+            { value: "2", label: "2" },
+            { value: "3", label: "3" },
+            { value: "4", label: "4" },
+          ],
+        },
+      },
+      defaultProps: { images: [], columns: "3" },
+      render: ({ images, columns }) => (
+        <GalleryWidget images={images} columns={columns} />
+      ),
+    },
+    videoEmbed: {
+      label: "Video nhúng",
+      fields: {
+        url: { type: "text", label: "URL video" },
+        ratio: {
+          type: "select",
+          label: "Tỉ lệ",
+          options: [
+            { value: "16/9", label: "16:9" },
+            { value: "4/3", label: "4:3" },
+            { value: "1/1", label: "1:1" },
+          ],
+        },
+      },
+      defaultProps: { url: "", ratio: "16/9" },
+      render: ({ url, ratio }) => (
+        <VideoEmbedWidget url={url} ratio={ratio} />
+      ),
+    },
+    logoMarquee: {
+      label: "Dải logo",
+      fields: {
+        heading: { type: "text", label: "Tiêu đề" },
+        images: {
+          type: "array",
+          label: "Ảnh",
+          arrayFields: { src: imageField("Ảnh") },
+          defaultItemProps: { src: "" },
+          getItemSummary: (_item: { src?: string }, i?: number) => `Ảnh ${(i ?? 0) + 1}`,
+        },
+      },
+      defaultProps: { heading: "Đối tác", images: [] },
+      render: ({ heading, images }) => (
+        <LogoMarqueeWidget heading={heading} images={images} />
       ),
     },
   },

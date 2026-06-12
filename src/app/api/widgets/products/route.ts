@@ -8,7 +8,7 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const flagParam = url.searchParams.get("flag") ?? "bestseller";
   const flag = (FLAGS.includes(flagParam as ProductFlag) ? flagParam : "bestseller") as ProductFlag;
-  const limit = Math.min(Number(url.searchParams.get("limit")) || 4, 24);
+  const limit = Math.max(1, Math.min(Number(url.searchParams.get("limit")) || 4, 24));
   const products = await getFeaturedProducts(flag, limit);
   return NextResponse.json({ data: products });
 }

@@ -25,16 +25,19 @@ export async function savePageAction(
     let pageId = id;
     let previousSlug: string | undefined;
     let isSystem = false;
+    let effectiveSlug = parsed.data.slug;
     if (id) {
       const existing = await getPageAdmin(id);
       if (!existing) return { ok: false, error: "Trang không tồn tại" };
       previousSlug = existing.slug;
       isSystem = existing.isSystem;
+      // updatePage keeps the stored slug for system pages — mirror that here.
+      if (isSystem) effectiveSlug = existing.slug;
       await updatePage(id, parsed.data);
     } else {
       pageId = await createPage(parsed.data);
     }
-    for (const path of pagePathsToRevalidate(parsed.data.slug, { isSystem, previousSlug })) {
+    for (const path of pagePathsToRevalidate(effectiveSlug, { isSystem, previousSlug })) {
       revalidatePath(path);
     }
     return { ok: true, id: pageId ?? undefined };

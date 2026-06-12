@@ -100,7 +100,8 @@ export async function updatePage(id: string, input: PageInput): Promise<void> {
 
 export async function deletePage(id: string): Promise<void> {
   const existing = await getPageAdmin(id);
-  if (existing?.isSystem) {
+  if (!existing) throw new Error("Trang không tồn tại");
+  if (existing.isSystem) {
     throw new Error("Không thể xóa trang hệ thống");
   }
   await db.delete(pages).where(eq(pages.id, id));

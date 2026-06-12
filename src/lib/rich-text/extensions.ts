@@ -1,6 +1,5 @@
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
-import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import type { Extensions } from "@tiptap/react";
@@ -15,13 +14,15 @@ export function tiptapExtensions(placeholder?: string): Extensions {
   return [
     StarterKit.configure({
       heading: { levels: [2, 3, 4] },
+      // StarterKit v3 bundles Link — configure it here instead of adding a
+      // separate Link.configure(...) which would cause duplicate extension names.
+      link: {
+        openOnClick: false,
+        autolink: true,
+        HTMLAttributes: { rel: "noopener noreferrer", target: "_blank" },
+      },
     }),
     Image.configure({ inline: false, allowBase64: false }),
-    Link.configure({
-      openOnClick: false,
-      autolink: true,
-      HTMLAttributes: { rel: "noopener noreferrer", target: "_blank" },
-    }),
     TextAlign.configure({ types: ["heading", "paragraph"] }),
     Placeholder.configure({ placeholder: placeholder ?? "Nhập nội dung..." }),
   ];

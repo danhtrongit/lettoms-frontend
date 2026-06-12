@@ -100,6 +100,21 @@ export const puckDataSchema = z.looseObject({
 
 export type PuckDataInput = z.infer<typeof puckDataSchema>;
 
+// ---- Menus ----
+const menuLeafSchema = z.strictObject({
+  label: z.string().min(1),
+  href: z.string().min(1),
+});
+
+export const menuItemsSchema = z.array(
+  menuLeafSchema.extend({
+    children: z.array(menuLeafSchema).optional(),
+  })
+);
+
+export const menuKeySchema = z.enum(["header", "footer"]);
+export type MenuItemsInput = z.infer<typeof menuItemsSchema>;
+
 // ---- User management ----
 export const userInputSchema = z.object({
   name: z.string().min(2),

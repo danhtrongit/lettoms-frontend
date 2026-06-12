@@ -80,6 +80,7 @@ export function MenuEditor({ initialHeader, initialFooter, pageOptions }: MenuEd
 
         <TabsContent value="header">
           <MenuTabPanel
+            dndId="menu-dnd-header"
             items={header.items}
             setItems={header.setItems}
             onSave={() => save("header", header.items)}
@@ -89,6 +90,7 @@ export function MenuEditor({ initialHeader, initialFooter, pageOptions }: MenuEd
 
         <TabsContent value="footer">
           <MenuTabPanel
+            dndId="menu-dnd-footer"
             items={footer.items}
             setItems={footer.setItems}
             onSave={() => save("footer", footer.items)}
@@ -101,11 +103,13 @@ export function MenuEditor({ initialHeader, initialFooter, pageOptions }: MenuEd
 }
 
 function MenuTabPanel({
+  dndId,
   items,
   setItems,
   onSave,
   pending,
 }: {
+  dndId: string;
   items: MenuNode[];
   setItems: React.Dispatch<React.SetStateAction<MenuNode[]>>;
   onSave: () => void;
@@ -189,7 +193,8 @@ function MenuTabPanel({
 
   return (
     <div className="mt-4 space-y-4 rounded-lg border bg-background p-4">
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+      {/* Stable id keeps dnd-kit's aria-describedby deterministic across SSR/client (two tabs = two contexts). */}
+      <DndContext id={dndId} sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
         <SortableContext items={ids} strategy={verticalListSortingStrategy}>
           <div className="space-y-2">
             {items.map((item, idx) => (

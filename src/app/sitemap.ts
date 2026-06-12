@@ -4,16 +4,18 @@ import { genders } from "@/data/site";
 import { getAllCategories } from "@/lib/repos/categories.repo";
 import { getAllProducts } from "@/lib/repos/products.repo";
 import { getAllArticles, getAllArticleCategories } from "@/lib/repos/articles.repo";
+import { listPublishedPagesForSitemap } from "@/lib/repos/pages.repo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url;
   const now = new Date();
 
-  const [categories, products, articles, articleCategories] = await Promise.all([
+  const [categories, products, articles, articleCategories, cmsPages] = await Promise.all([
     getAllCategories(),
     getAllProducts(),
     getAllArticles(),
     getAllArticleCategories(),
+    listPublishedPagesForSitemap(),
   ]);
 
   const staticRoutes = [
@@ -89,6 +91,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
+  const cmsPageRoutes = cmsPages
+    .filter((p) => !p.isSystem) // home đã có ở staticRoutes ("")
+    .map((p) => ({
+      url: `${base}/trang/${p.slug}`,
+      lastModified: p.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    }));
+
   return [
     ...staticRoutes,
     ...genderRoutes,
@@ -97,5 +108,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...productRoutes,
     ...articleCategoryRoutes,
     ...articleRoutes,
+    ...cmsPageRoutes,
   ];
 }

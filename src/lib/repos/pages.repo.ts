@@ -98,6 +98,15 @@ export async function updatePage(id: string, input: PageInput): Promise<void> {
     .where(eq(pages.id, id));
 }
 
+export async function listPublishedPagesForSitemap(): Promise<
+  { slug: string; updatedAt: Date; isSystem: boolean }[]
+> {
+  return db
+    .select({ slug: pages.slug, updatedAt: pages.updatedAt, isSystem: pages.isSystem })
+    .from(pages)
+    .where(eq(pages.status, "published"));
+}
+
 export async function deletePage(id: string): Promise<void> {
   const existing = await getPageAdmin(id);
   if (!existing) throw new Error("Trang không tồn tại");

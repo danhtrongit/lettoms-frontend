@@ -79,10 +79,14 @@ export async function createPage(input: PageInput): Promise<string> {
 }
 
 export async function updatePage(id: string, input: PageInput): Promise<void> {
+  const existing = await getPageAdmin(id);
+  if (!existing) throw new Error("Trang không tồn tại");
+  // System pages (e.g. homepage) keep their slug — other code addresses them by it.
+  const slug = existing.isSystem ? existing.slug : input.slug;
   await db
     .update(pages)
     .set({
-      slug: input.slug,
+      slug,
       title: input.title,
       status: input.status,
       blocks: processBlocks(input.blocks as PageBlock[]),
@@ -95,5 +99,9 @@ export async function updatePage(id: string, input: PageInput): Promise<void> {
 }
 
 export async function deletePage(id: string): Promise<void> {
+  const existing = await getPageAdmin(id);
+  if (existing?.isSystem) {
+    throw new Error("Không thể xóa trang hệ thống");
+  }
   await db.delete(pages).where(eq(pages.id, id));
 }

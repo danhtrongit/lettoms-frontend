@@ -67,7 +67,7 @@ export default async function AdminPagesPage() {
                     {formatDate(r.updatedAt.toISOString())}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <PageRowActions id={r.id} slug={r.slug} />
+                    <PageRowActions id={r.id} slug={r.slug} isSystem={r.isSystem} />
                   </td>
                 </tr>
               ))

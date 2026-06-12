@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { deletePageAction } from "@/server/actions/pages";
 
-export function PageRowActions({ id, slug }: { id: string; slug: string }) {
+export function PageRowActions({ id, slug, isSystem }: { id: string; slug: string; isSystem: boolean }) {
   const router = useRouter();
   const [pending, startTransition] = React.useTransition();
 
@@ -46,10 +46,12 @@ export function PageRowActions({ id, slug }: { id: string; slug: string }) {
             Xem
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem variant="destructive" onClick={handleDelete}>
-          <Trash2Icon className="size-4" />
-          Xóa
-        </DropdownMenuItem>
+        {!isSystem && (
+          <DropdownMenuItem variant="destructive" onClick={handleDelete}>
+            <Trash2Icon className="size-4" />
+            Xóa
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -4,7 +4,7 @@ import { authConfig } from "@/lib/auth/auth.config";
 
 const { auth } = NextAuth(authConfig);
 
-export default auth((req) => {
+export const proxy = auth((req) => {
   const { nextUrl } = req;
   const user = req.auth?.user;
   const role = user?.role;
@@ -15,6 +15,18 @@ export default auth((req) => {
 
   // Admin area: staff/admin only
   if (path.startsWith("/admin")) {
+    if (!isLoggedIn) {
+      const url = new URL("/dang-nhap", nextUrl);
+      url.searchParams.set("callbackUrl", path);
+      return NextResponse.redirect(url);
+    }
+    if (!isStaff) {
+      return NextResponse.redirect(new URL("/", nextUrl));
+    }
+  }
+
+  // Draft preview: staff/admin only
+  if (path.startsWith("/xem-truoc")) {
     if (!isLoggedIn) {
       const url = new URL("/dang-nhap", nextUrl);
       url.searchParams.set("callbackUrl", path);
@@ -43,5 +55,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/admin/:path*", "/tai-khoan/:path*", "/dang-nhap", "/dang-ky"],
+  matcher: ["/admin/:path*", "/tai-khoan/:path*", "/dang-nhap", "/dang-ky", "/xem-truoc/:path*"],
 };

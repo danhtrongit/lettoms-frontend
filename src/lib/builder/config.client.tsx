@@ -20,6 +20,8 @@ import { LogoMarqueeWidget } from "@/components/cms/widgets/logo-marquee-widget"
 import { ProductGridClient } from "@/components/cms/widgets/product-grid-widget.client";
 import { ProductCarouselClient } from "@/components/cms/widgets/product-carousel-widget.client";
 import { FeaturedCategoriesClient } from "@/components/cms/widgets/featured-categories-widget.client";
+import { CountdownWidget } from "@/components/cms/widgets/countdown-widget";
+import { NewsletterWidget } from "@/components/cms/widgets/newsletter-widget";
 import { colorField } from "@/lib/builder/fields/color-field";
 import { richTextField } from "@/lib/builder/fields/richtext-field";
 import { imageField } from "@/lib/builder/fields/image-field";
@@ -36,7 +38,7 @@ export const clientConfig: Config = {
     basic: { title: "Cơ bản", components: ["heading", "richText", "button", "iconList", "faqAccordion", "testimonial"] },
     media: { title: "Media", components: ["hero", "bannerImage", "image", "gallery", "videoEmbed", "logoMarquee"] },
     commerce: { title: "Thương mại", components: ["productGrid", "productCarousel", "featuredCategories"] },
-    marketing: { title: "Marketing", components: [] },
+    marketing: { title: "Marketing", components: ["countdown", "newsletter"] },
   },
   components: {
     section: {
@@ -431,6 +433,36 @@ export const clientConfig: Config = {
       defaultProps: { heading: "Mua theo danh mục", gender: "nu", limit: 6 },
       render: ({ heading, gender, limit }) => (
         <FeaturedCategoriesClient heading={heading} gender={gender} limit={limit} />
+      ),
+    },
+    countdown: {
+      label: "Đếm ngược",
+      fields: {
+        heading: { type: "text", label: "Tiêu đề" },
+        subheading: { type: "text", label: "Phụ đề" },
+        target: { type: "text", label: "Thời điểm kết thúc (ISO: 2026-12-31T23:59)" },
+      },
+      defaultProps: { heading: "Ưu đãi kết thúc sau", target: "", subheading: "" },
+      render: ({ heading, subheading, target }) => (
+        <CountdownWidget heading={heading} subheading={subheading} target={target} />
+      ),
+    },
+    newsletter: {
+      label: "Đăng ký nhận tin",
+      fields: {
+        heading: { type: "text", label: "Tiêu đề" },
+        subheading: { type: "text", label: "Phụ đề" },
+        placeholder: { type: "text", label: "Placeholder" },
+        buttonLabel: { type: "text", label: "Nhãn nút" },
+      },
+      defaultProps: {
+        heading: "Đăng ký nhận ưu đãi",
+        subheading: "Nhận thông tin sản phẩm mới và khuyến mãi.",
+        placeholder: "Email của bạn",
+        buttonLabel: "Đăng ký",
+      },
+      render: ({ heading, subheading, placeholder, buttonLabel }) => (
+        <NewsletterWidget heading={heading} subheading={subheading} placeholder={placeholder} buttonLabel={buttonLabel} />
       ),
     },
   },

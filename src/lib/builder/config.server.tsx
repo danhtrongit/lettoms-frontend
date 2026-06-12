@@ -18,6 +18,8 @@ import { LogoMarqueeWidget } from "@/components/cms/widgets/logo-marquee-widget"
 import { ProductGridServer } from "@/components/cms/widgets/product-grid-widget";
 import { ProductCarouselServer } from "@/components/cms/widgets/product-carousel-widget";
 import { FeaturedCategoriesServer } from "@/components/cms/widgets/featured-categories-widget";
+import { CountdownWidget } from "@/components/cms/widgets/countdown-widget";
+import { NewsletterWidget } from "@/components/cms/widgets/newsletter-widget";
 
 /**
  * Render-only config for the public site (<Render> in RSC).
@@ -118,6 +120,16 @@ export const serverConfig: Config = {
     featuredCategories: {
       render: ({ heading, gender, limit }) => (
         <FeaturedCategoriesServer heading={heading} gender={gender} limit={limit} />
+      ),
+    },
+    countdown: {
+      render: ({ heading, subheading, target }) => (
+        <CountdownWidget heading={heading} subheading={subheading} target={target} />
+      ),
+    },
+    newsletter: {
+      render: ({ heading, subheading, placeholder, buttonLabel }) => (
+        <NewsletterWidget heading={heading} subheading={subheading} placeholder={placeholder} buttonLabel={buttonLabel} />
       ),
     },
   },

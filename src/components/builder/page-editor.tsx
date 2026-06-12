@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Puck, createUsePuck } from "@puckeditor/core";
+import { Puck, useGetPuck } from "@puckeditor/core";
 import "@puckeditor/core/puck.css";
 import type { Data } from "@puckeditor/core";
 import { MonitorIcon, SmartphoneIcon, TabletIcon } from "lucide-react";
@@ -12,7 +12,6 @@ import { clientConfig } from "@/lib/builder/config.client";
 import { savePageContentAction } from "@/server/actions/builder";
 import { Button } from "@/components/ui/button";
 
-const usePuck = createUsePuck();
 
 interface PageEditorProps {
   page: {
@@ -25,13 +24,13 @@ interface PageEditorProps {
 }
 
 function HeaderActions({ page }: PageEditorProps) {
-  const appState = usePuck((s) => s.appState);
+  const getPuck = useGetPuck();
   const router = useRouter();
   const [saving, setSaving] = React.useState(false);
 
   const save = async (status: "draft" | "published") => {
     setSaving(true);
-    const res = await savePageContentAction(page.id, appState.data, status);
+    const res = await savePageContentAction(page.id, getPuck().appState.data, status);
     setSaving(false);
     if (res.ok) {
       toast.success(status === "published" ? "Đã xuất bản" : "Đã lưu nháp");

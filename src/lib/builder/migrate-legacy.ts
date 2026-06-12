@@ -9,6 +9,10 @@ export function legacyBlocksToPuckData(blocks: PageBlock[]): Data {
   } as Data;
 }
 
+function toSrcArray(v: unknown): { src: string }[] {
+  return Array.isArray(v) ? v.filter((s) => typeof s === "string").map((src) => ({ src })) : [];
+}
+
 function mapBlock(b: PageBlock): { type: string; props: Record<string, unknown> } {
   if (b.type === "columns") {
     const props = b.props as { count?: unknown; gap?: unknown; columns?: PageBlock[][] };
@@ -24,6 +28,25 @@ function mapBlock(b: PageBlock): { type: string; props: Record<string, unknown> 
         column2: (cols[1] ?? []).map(mapBlock),
         column3: (cols[2] ?? []).map(mapBlock),
         column4: (cols[3] ?? []).map(mapBlock),
+      },
+    };
+  }
+  if (b.type === "gallery" || b.type === "logoMarquee") {
+    return {
+      type: b.type,
+      props: { id: b.id, ...b.props, images: toSrcArray((b.props as Record<string, unknown>).images) },
+    };
+  }
+  if (b.type === "iconList") {
+    const items = (b.props as Record<string, unknown>).items;
+    return {
+      type: b.type,
+      props: {
+        id: b.id,
+        ...b.props,
+        items: Array.isArray(items)
+          ? items.filter((t) => typeof t === "string").map((text) => ({ text }))
+          : [],
       },
     };
   }

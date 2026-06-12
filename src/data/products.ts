@@ -77,20 +77,6 @@ const APPAREL_SIZES: Size[] = [
   { code: "006", label: "XXL", inStock: false },
 ];
 
-const KIDS_SIZES: Size[] = [
-  { code: "k1", label: "100", inStock: true },
-  { code: "k2", label: "110", inStock: true },
-  { code: "k3", label: "120", inStock: true },
-  { code: "k4", label: "130", inStock: true },
-  { code: "k5", label: "140", inStock: false },
-];
-
-const BABY_SIZES: Size[] = [
-  { code: "b1", label: "70", inStock: true },
-  { code: "b2", label: "80", inStock: true },
-  { code: "b3", label: "90", inStock: true },
-];
-
 // Real Uniqlo VN product seed: id, name, price, promo, color codes, rating, reviews.
 interface Seed {
   id: string; // real 6-digit Uniqlo id
@@ -111,12 +97,7 @@ const DESC =
   "Thiết kế tối giản, phom dáng tôn dáng cùng chất liệu cao cấp mang lại sự thoải mái cả ngày dài. Dễ phối đồ cho nhiều dịp khác nhau.";
 
 function makeProduct(seed: Seed): Product {
-  const sizes =
-    seed.gender === "em-be"
-      ? BABY_SIZES
-      : seed.gender === "tre-em"
-        ? KIDS_SIZES
-        : APPAREL_SIZES;
+  const sizes = APPAREL_SIZES;
 
   const colors = seed.colorCodes.map((c) => color(c, seed.id));
 
@@ -204,25 +185,6 @@ const seeds: Seed[] = [
   { id: "455533", name: "Quần Shorts Co Giãn Dáng Ôm", gender: "nam", categorySlug: "quan", subcategorySlug: "quan-shorts", price: 588000, colorCodes: ["05", "00", "32", "57", "69"], rating: 4.8, reviewCount: 617, flags: ["bestseller"] },
   { id: "482944", name: "Quần Shorts Chino", gender: "nam", categorySlug: "quan", subcategorySlug: "quan-shorts", price: 588000, colorCodes: ["32", "01", "08", "55", "66", "69"], rating: 4.8, reviewCount: 71 },
   { id: "482952", name: "AirSense Quần Shorts", gender: "nam", categorySlug: "quan", subcategorySlug: "quan-shorts", price: 588000, colorCodes: ["32", "00", "09", "56"], rating: 5, reviewCount: 26, flags: ["new"] },
-
-  // ===================== TRẺ EM =====================
-  // --- tre-em / ao / ao-thun ---
-  { id: "483430", name: "DRY-EX Áo Thun Trẻ Em", gender: "tre-em", categorySlug: "ao", subcategorySlug: "ao-thun", price: 244000, colorCodes: ["09", "67"], rating: 5, reviewCount: 10, flags: ["new"] },
-  { id: "483428", name: "DRY-EX Áo Thun Trẻ Em", gender: "tre-em", categorySlug: "ao", subcategorySlug: "ao-thun", price: 244000, colorCodes: ["61", "71"], rating: 4.9, reviewCount: 30 },
-  { id: "483418", name: "AIRism Cotton Áo Thun In Họa Tiết Ringer", gender: "tre-em", categorySlug: "ao", subcategorySlug: "ao-thun", price: 195000, colorCodes: ["01"], rating: 4.9, reviewCount: 406 },
-  { id: "474592", name: "AIRism Cotton Áo Thun Trẻ Em", gender: "tre-em", categorySlug: "ao", subcategorySlug: "ao-thun", price: 195000, colorCodes: ["63", "00", "09", "11", "41"], rating: 4.9, reviewCount: 1000, flags: ["bestseller"] },
-  { id: "483426", name: "AIRism Cotton Áo Thun Kẻ Sọc", gender: "tre-em", categorySlug: "ao", subcategorySlug: "ao-thun", price: 195000, colorCodes: ["61", "11", "69"], rating: 4.9, reviewCount: 175 },
-
-  // --- tre-em / quan / quan-shorts ---
-  { id: "488197", name: "Quần Shorts Jeans Dáng Baggy", gender: "tre-em", categorySlug: "quan", subcategorySlug: "quan-shorts", price: 391000, colorCodes: ["62", "65"], rating: 4.8, reviewCount: 49, flags: ["new"] },
-  { id: "483406", name: "Quần Shorts Geared", gender: "tre-em", categorySlug: "quan", subcategorySlug: "quan-shorts", price: 293000, colorCodes: ["30", "09", "15", "34", "41", "51", "57"], rating: 4.9, reviewCount: 97, flags: ["bestseller"] },
-  { id: "465112", name: "Quần Easy Short Trẻ Em", gender: "tre-em", categorySlug: "quan", subcategorySlug: "quan-shorts", price: 293000, colorCodes: ["31", "56", "69"], rating: 4.9, reviewCount: 209 },
-
-  // ===================== EM BÉ =====================
-  // --- em-be / quan / quan-legging ---
-  { id: "460776", name: "Quần Leggings Vải Gân Em Bé", gender: "em-be", categorySlug: "quan", subcategorySlug: "quan-legging", price: 146000, colorCodes: ["00", "72"], rating: 4.8, reviewCount: 89, flags: ["bestseller"] },
-  { id: "481881", name: "Quần Leggings Họa Tiết Vải Gân", gender: "em-be", categorySlug: "quan", subcategorySlug: "quan-legging", price: 146000, colorCodes: ["10"], rating: 4.9, reviewCount: 15, flags: ["new"] },
-  { id: "469617", name: "Quần Leggings Vải Denim-like Dáng Relax", gender: "em-be", categorySlug: "quan", subcategorySlug: "quan-legging", price: 146000, colorCodes: ["69"], rating: 4.9, reviewCount: 34 },
 ];
 
 export const products: Product[] = seeds.map(makeProduct);

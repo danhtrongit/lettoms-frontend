@@ -33,13 +33,9 @@ export const siteConfig = {
 export const genders: { slug: Gender; name: string }[] = [
   { slug: "nu", name: "Nữ" },
   { slug: "nam", name: "Nam" },
-  { slug: "tre-em", name: "Trẻ Em" },
-  { slug: "em-be", name: "Em Bé" },
 ];
 
 export const genderLabel: Record<Gender, string> = {
   "nu": "Nữ",
   "nam": "Nam",
-  "tre-em": "Trẻ Em",
-  "em-be": "Em Bé",
 };

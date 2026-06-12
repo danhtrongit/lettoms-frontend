@@ -7,7 +7,7 @@ import { parseFilterParams } from "@/lib/filter-params";
 import { buildMetadata } from "@/lib/seo";
 import { ProductListing } from "@/components/product/product-listing";
 
-const VALID: Gender[] = ["nu", "nam", "tre-em", "em-be"];
+const VALID: Gender[] = ["nu", "nam"];
 
 type Params = Promise<{ gender: string; category: string; subcategory: string }>;
 type Search = Promise<Record<string, string | string[] | undefined>>;

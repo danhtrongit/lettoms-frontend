@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCategoriesByGenderDb } from "@/lib/repos/categories.repo";
 import type { Gender } from "@/types";
 
-const GENDERS: Gender[] = ["nu", "nam", "tre-em", "em-be"];
+const GENDERS: Gender[] = ["nu", "nam"];
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

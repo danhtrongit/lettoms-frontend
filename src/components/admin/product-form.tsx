@@ -85,8 +85,6 @@ interface ProductFormProps {
 const GENDERS: { value: Gender; label: string }[] = [
   { value: "nu", label: "Nữ" },
   { value: "nam", label: "Nam" },
-  { value: "tre-em", label: "Trẻ Em" },
-  { value: "em-be", label: "Em Bé" },
 ];
 
 const FLAGS: { value: ProductFlag; label: string }[] = [

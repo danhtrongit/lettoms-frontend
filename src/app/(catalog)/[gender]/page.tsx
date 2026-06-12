@@ -10,7 +10,7 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { FeaturedCollection } from "@/components/home/featured-collection";
 import { SectionHeading } from "@/components/common/section-heading";
 
-const VALID: Gender[] = ["nu", "nam", "tre-em", "em-be"];
+const VALID: Gender[] = ["nu", "nam"];
 
 export function generateStaticParams() {
   return genders.map((g) => ({ gender: g.slug }));

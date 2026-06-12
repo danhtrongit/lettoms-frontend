@@ -1,6 +1,6 @@
 // Core domain types for the Letom's storefront
 
-export type Gender = "nu" | "nam" | "tre-em" | "em-be";
+export type Gender = "nu" | "nam";
 
 export type ProductFlag = "new" | "sale" | "limited" | "online-only" | "bestseller";
 

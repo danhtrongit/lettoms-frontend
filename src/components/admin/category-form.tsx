@@ -47,8 +47,6 @@ interface CategoryFormProps {
 const GENDERS: { value: Gender; label: string }[] = [
   { value: "nu", label: "Nữ" },
   { value: "nam", label: "Nam" },
-  { value: "tre-em", label: "Trẻ Em" },
-  { value: "em-be", label: "Em Bé" },
 ];
 
 export function CategoryForm({ id, parents, initial }: CategoryFormProps) {

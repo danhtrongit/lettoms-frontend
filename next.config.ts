@@ -15,10 +15,6 @@ const nextConfig: NextConfig = {
       { source: "/women/:path*", destination: "/nu/:path*", permanent: true },
       { source: "/men", destination: "/nam", permanent: true },
       { source: "/men/:path*", destination: "/nam/:path*", permanent: true },
-      { source: "/kids", destination: "/tre-em", permanent: true },
-      { source: "/kids/:path*", destination: "/tre-em/:path*", permanent: true },
-      { source: "/baby", destination: "/em-be", permanent: true },
-      { source: "/baby/:path*", destination: "/em-be/:path*", permanent: true },
       // Catalog functional
       { source: "/products/:id", destination: "/san-pham/:id", permanent: true },
       { source: "/search", destination: "/tim-kiem", permanent: true },

@@ -429,8 +429,6 @@ export const clientConfig: Config = {
           options: [
             { label: "Nữ", value: "nu" },
             { label: "Nam", value: "nam" },
-            { label: "Trẻ Em", value: "tre-em" },
-            { label: "Em Bé", value: "em-be" },
           ],
         },
         limit: { type: "number", label: "Số danh mục", min: 1 },

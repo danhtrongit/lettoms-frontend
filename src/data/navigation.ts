@@ -57,8 +57,6 @@ export const footerNav: NavColumn[] = [
     items: [
       { label: "Nữ", href: "/nu" },
       { label: "Nam", href: "/nam" },
-      { label: "Trẻ Em", href: "/tre-em" },
-      { label: "Em Bé", href: "/em-be" },
       { label: "Hàng Mới", href: "/uu-dai/hang-moi" },
       { label: "Khuyến Mãi", href: "/uu-dai/khuyen-mai" },
     ],

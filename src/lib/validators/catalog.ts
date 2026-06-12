@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const genderSchema = z.enum(["nu", "nam", "tre-em", "em-be"]);
+export const genderSchema = z.enum(["nu", "nam"]);
 export const productFlagSchema = z.enum([
   "new",
   "sale",

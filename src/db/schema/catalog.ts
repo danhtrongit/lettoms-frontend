@@ -13,7 +13,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
-export const genderEnum = pgEnum("gender", ["nu", "nam", "tre-em", "em-be"]);
+export const genderEnum = pgEnum("gender", ["nu", "nam"]);
 
 // ---- Reference tables ----
 export const colors = pgTable("colors", {

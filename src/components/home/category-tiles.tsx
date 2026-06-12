@@ -12,7 +12,6 @@ interface IconTile {
 const tiles: IconTile[] = [
   { label: "Nữ", href: "/nu", image: uniqloItemImage("484508", "00", 400) },
   { label: "Nam", href: "/nam", image: uniqloItemImage("475296", "09", 400) },
-  { label: "Trẻ Em", href: "/tre-em", image: uniqloItemImage("474592", "63", 400) },
   { label: "AIRism", href: "/nu/do-mac-trong/airism", image: uniqloItemImage("482181", "00", 400) },
   { label: "Bra Top", href: "/nu/do-mac-trong/ao-bra-top", image: uniqloItemImage("465707", "00", 400) },
   { label: "Áo Khoác", href: "/nu/ao-khoac/ao-khoac-nhe", image: uniqloItemImage("484610", "38", 400) },

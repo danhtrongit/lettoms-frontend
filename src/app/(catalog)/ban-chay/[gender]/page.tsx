@@ -7,7 +7,7 @@ import { buildMetadata } from "@/lib/seo";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { ProductCard } from "@/components/product/product-card";
 
-const VALID: Gender[] = ["nu", "nam", "tre-em", "em-be"];
+const VALID: Gender[] = ["nu", "nam"];
 
 export function generateStaticParams() {
   return genders.map((g) => ({ gender: g.slug }));

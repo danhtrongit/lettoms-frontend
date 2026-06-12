@@ -5,6 +5,7 @@ import type { Page, PageBlock } from "@/db/schema/cms";
 import type { PageInput } from "@/lib/validators/cms";
 import { renderTiptapHtml } from "@/lib/rich-text/render";
 import type { JSONContent } from "@tiptap/core";
+import type { Data } from "@puckeditor/core";
 
 /**
  * Walk page blocks (including nested column children) and cache the
@@ -105,6 +106,17 @@ export async function listPublishedPagesForSitemap(): Promise<
     .select({ slug: pages.slug, updatedAt: pages.updatedAt, isSystem: pages.isSystem })
     .from(pages)
     .where(eq(pages.status, "published"));
+}
+
+export async function updatePageContent(
+  id: string,
+  content: Data,
+  status: "draft" | "published"
+): Promise<void> {
+  await db
+    .update(pages)
+    .set({ content, status, updatedAt: new Date() })
+    .where(eq(pages.id, id));
 }
 
 export async function deletePage(id: string): Promise<void> {

@@ -73,6 +73,19 @@ export const pageInputSchema = z.object({
 
 export type PageInput = z.infer<typeof pageInputSchema>;
 
+const componentDataSchema = z.looseObject({
+  type: z.string(),
+  props: z.looseObject({ id: z.string() }),
+});
+
+export const puckDataSchema = z.looseObject({
+  root: z.looseObject({}).default({}),
+  content: z.array(componentDataSchema).default([]),
+  zones: z.record(z.string(), z.array(componentDataSchema)).optional(),
+});
+
+export type PuckDataInput = z.infer<typeof puckDataSchema>;
+
 // ---- User management ----
 export const userInputSchema = z.object({
   name: z.string().min(2),

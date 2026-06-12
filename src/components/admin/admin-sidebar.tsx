@@ -14,6 +14,7 @@ import {
   SettingsIcon,
   LayoutTemplateIcon,
   PaletteIcon,
+  MenuIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -34,6 +35,7 @@ const links: NavLink[] = [
   { href: "/admin/media", label: "Thư viện ảnh", icon: ImageIcon },
   { href: "/admin/orders", label: "Đơn hàng", icon: ShoppingCartIcon },
   { href: "/admin/pages", label: "Trang (Page)", icon: LayoutTemplateIcon },
+  { href: "/admin/menus", label: "Menu", icon: MenuIcon },
   { href: "/admin/users", label: "Người dùng", icon: UsersIcon, adminOnly: true },
   { href: "/admin/settings", label: "Cấu hình", icon: SettingsIcon, adminOnly: true },
 ];

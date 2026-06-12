@@ -17,6 +17,37 @@ import { formatVND } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useProductSearch, TRENDING } from "@/hooks/use-product-search";
 
+/** Compact dropdown panel for DB-driven header items that have children (columns) but no gender. */
+function ColumnsPanel({ columns, onNavigate }: { columns: NavItem["columns"]; onNavigate: () => void }) {
+  if (!columns?.length) return null;
+  return (
+    <div className="container-page py-4">
+      <div className="flex flex-wrap gap-8">
+        {columns.map((col) => (
+          <div key={col.title} className="min-w-[160px] space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              {col.title}
+            </p>
+            <ul className="space-y-1.5">
+              {col.items.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={onNavigate}
+                    className="block text-sm text-foreground transition-colors hover:text-primary"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** Full-width category grid shown in the mega-menu panel. */
 function MegaPanel({ gender, onNavigate }: { gender: Gender; onNavigate: () => void }) {
   const cats = getCategoriesByGender(gender);
@@ -309,6 +340,21 @@ export function DesktopNav({ nav }: DesktopNavProps) {
             >
               {item.label}
             </button>
+          ) : item.columns?.length ? (
+            <button
+              key={item.label}
+              type="button"
+              onMouseEnter={() => openPanel(item.label)}
+              onFocus={() => openPanel(item.label)}
+              onClick={() => setOpen((o) => (o === item.label ? null : item.label))}
+              aria-expanded={open === item.label}
+              className={cn(
+                "inline-flex h-16 items-center px-3 text-sm font-medium uppercase tracking-wide transition-colors hover:text-primary",
+                open === item.label && "text-primary"
+              )}
+            >
+              {item.label}
+            </button>
           ) : (
             <Link
               key={item.label}
@@ -360,9 +406,14 @@ export function DesktopNav({ nav }: DesktopNavProps) {
           >
             {open === "search" ? (
               <SearchPanel search={search} inputRef={inputRef} />
-            ) : (
-              <MegaPanel gender={open as Gender} onNavigate={close} />
-            )}
+            ) : (() => {
+              // Check if the open key matches a columns-only nav item
+              const columnsItem = nav.find((i) => !i.gender && i.columns?.length && i.label === open);
+              if (columnsItem) {
+                return <ColumnsPanel columns={columnsItem.columns} onNavigate={close} />;
+              }
+              return <MegaPanel gender={open as Gender} onNavigate={close} />;
+            })()}
           </div>
         </>
       )}

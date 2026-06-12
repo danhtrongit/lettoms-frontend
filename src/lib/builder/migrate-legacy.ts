@@ -1,5 +1,12 @@
 import type { Data } from "@puckeditor/core";
-import type { PageBlock } from "@/db/schema/cms";
+
+/** Legacy block shape (pre-Puck). The DB column was dropped; this type lives on
+ *  for the one-time migration script and historical data conversion. */
+export type PageBlock = {
+  id: string;
+  type: string;
+  props: Record<string, unknown>;
+};
 
 /** Convert legacy PageBlock[] to Puck Data. Pure function — unit-tested in Phase 3. */
 export function legacyBlocksToPuckData(blocks: PageBlock[]): Data {

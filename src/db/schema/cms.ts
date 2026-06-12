@@ -76,13 +76,6 @@ export const menus = pgTable("menus", {
 // ---- Pages (drag-and-drop widget builder) ----
 export const pageStatus = pgEnum("page_status", ["draft", "published"]);
 
-// A widget block: type + arbitrary props (validated per-type in app code)
-export type PageBlock = {
-  id: string;
-  type: string; // "hero" | "productGrid" | "bannerImage" | ...
-  props: Record<string, unknown>;
-};
-
 export const pages = pgTable("pages", {
   id: text("id")
     .primaryKey()
@@ -90,9 +83,7 @@ export const pages = pgTable("pages", {
   slug: text("slug").notNull().unique(),
   title: text("title").notNull(),
   status: pageStatus("status").notNull().default("draft"),
-  blocks: jsonb("blocks").$type<PageBlock[]>().notNull().default([]),
-  // New Puck-based builder data. `blocks` is the legacy format, kept until
-  // the final cleanup migration; pages with non-null `content` use Puck.
+  // Puck-based builder data.
   content: jsonb("content").$type<Data>(),
   seoTitle: text("seo_title"),
   seoDescription: text("seo_description"),

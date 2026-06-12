@@ -56,7 +56,6 @@ export async function createPageShell(input: PageSettingsInput): Promise<string>
       slug: input.slug,
       title: input.title,
       status: input.status,
-      blocks: [],
       content: { root: { props: {} }, content: [] } as Data,
       seoTitle: input.seoTitle ?? null,
       seoDescription: input.seoDescription ?? null,

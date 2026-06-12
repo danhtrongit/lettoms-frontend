@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { legacyBlocksToPuckData } from "./migrate-legacy";
-import type { PageBlock } from "@/db/schema/cms";
+import { legacyBlocksToPuckData, type PageBlock } from "./migrate-legacy";
 
 describe("legacyBlocksToPuckData", () => {
   test("mảng rỗng", () => {

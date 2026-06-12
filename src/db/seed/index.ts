@@ -16,8 +16,7 @@ import {
 import { mainNav, footerNav } from "@/data/navigation";
 import { siteConfig } from "@/data/site";
 import type { SiteSettings } from "@/db/schema/cms";
-import type { PageBlock } from "@/db/schema/cms";
-import { legacyBlocksToPuckData } from "@/lib/builder/migrate-legacy";
+import { legacyBlocksToPuckData, type PageBlock } from "@/lib/builder/migrate-legacy";
 
 async function clear() {
   // Delete in FK-safe order (children first).
@@ -353,7 +352,6 @@ async function seedPages() {
     slug: "home",
     title: "Trang chủ",
     status: "published",
-    blocks,
     content: legacyBlocksToPuckData(blocks),
     isSystem: true,
     seoTitle: `${siteConfig.name} — ${siteConfig.tagline}`,

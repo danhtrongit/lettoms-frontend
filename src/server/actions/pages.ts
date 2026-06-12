@@ -3,10 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/lib/auth/rbac";
 import { pageInputSchema } from "@/lib/validators/cms";
+import { pagePathsToRevalidate } from "@/lib/cms/revalidate";
 import {
   createPage,
   updatePage,
   deletePage,
+  getPageAdmin,
 } from "@/lib/repos/pages.repo";
 import type { ActionResult } from "./catalog";
 
@@ -21,13 +23,19 @@ export async function savePageAction(
   }
   try {
     let pageId = id;
+    let previousSlug: string | undefined;
+    let isSystem = false;
     if (id) {
+      const existing = await getPageAdmin(id);
+      previousSlug = existing?.slug;
+      isSystem = existing?.isSystem ?? false;
       await updatePage(id, parsed.data);
     } else {
       pageId = await createPage(parsed.data);
     }
-    revalidatePath("/admin/pages");
-    revalidatePath(`/${parsed.data.slug}`);
+    for (const path of pagePathsToRevalidate(parsed.data.slug, { isSystem, previousSlug })) {
+      revalidatePath(path);
+    }
     return { ok: true, id: pageId ?? undefined };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Lỗi không xác định" };

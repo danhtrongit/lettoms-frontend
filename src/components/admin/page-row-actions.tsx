@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { MoreHorizontalIcon, PencilIcon, Trash2Icon, ExternalLinkIcon } from "lucide-react";
+import { MoreHorizontalIcon, PencilIcon, Trash2Icon, ExternalLinkIcon, PaletteIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,6 +38,12 @@ export function PageRowActions({ id, slug, isSystem }: { id: string; slug: strin
           <Link href={`/admin/pages/${id}`}>
             <PencilIcon className="size-4" />
             Sửa
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={`/admin/pages/${id}/builder`}>
+            <PaletteIcon className="size-4" />
+            Thiết kế
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, PaletteIcon } from "lucide-react";
 import { listPagesAdmin } from "@/lib/repos/pages.repo";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/format";

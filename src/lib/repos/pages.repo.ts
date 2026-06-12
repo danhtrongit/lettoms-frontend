@@ -2,7 +2,7 @@ import { eq, desc } from "drizzle-orm";
 import { db } from "@/db";
 import { pages } from "@/db/schema";
 import type { Page, PageBlock } from "@/db/schema/cms";
-import type { PageInput } from "@/lib/validators/cms";
+import type { PageInput, PageSettingsInput } from "@/lib/validators/cms";
 import { renderTiptapHtml } from "@/lib/rich-text/render";
 import type { JSONContent } from "@tiptap/core";
 import type { Data } from "@puckeditor/core";
@@ -116,6 +116,41 @@ export async function updatePageContent(
   await db
     .update(pages)
     .set({ content, status, updatedAt: new Date() })
+    .where(eq(pages.id, id));
+}
+
+export async function createPageShell(input: PageSettingsInput): Promise<string> {
+  const [row] = await db
+    .insert(pages)
+    .values({
+      slug: input.slug,
+      title: input.title,
+      status: input.status,
+      blocks: [],
+      content: { root: { props: {} }, content: [] } as Data,
+      seoTitle: input.seoTitle ?? null,
+      seoDescription: input.seoDescription ?? null,
+      ogImage: input.ogImage ?? null,
+    })
+    .returning({ id: pages.id });
+  return row.id;
+}
+
+export async function updatePageSettings(id: string, input: PageSettingsInput): Promise<void> {
+  const existing = await getPageAdmin(id);
+  if (!existing) throw new Error("Trang không tồn tại");
+  const slug = existing.isSystem ? existing.slug : input.slug;
+  await db
+    .update(pages)
+    .set({
+      slug,
+      title: input.title,
+      status: input.status,
+      seoTitle: input.seoTitle ?? null,
+      seoDescription: input.seoDescription ?? null,
+      ogImage: input.ogImage ?? null,
+      updatedAt: new Date(),
+    })
     .where(eq(pages.id, id));
 }
 

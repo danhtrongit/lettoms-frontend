@@ -15,6 +15,8 @@ import {
 } from "@/data/articles";
 import { siteConfig } from "@/data/site";
 import type { SiteSettings } from "@/db/schema/cms";
+import type { PageBlock } from "@/db/schema/cms";
+import { legacyBlocksToPuckData } from "@/lib/builder/migrate-legacy";
 
 async function clear() {
   // Delete in FK-safe order (children first).
@@ -295,7 +297,7 @@ async function seedSettings() {
 
 async function seedPages() {
   // System homepage built from widgets (editable in admin, not deletable).
-  const blocks = [
+  const blocks: PageBlock[] = [
     {
       id: "home-hero",
       type: "hero",
@@ -351,6 +353,7 @@ async function seedPages() {
     title: "Trang chủ",
     status: "published",
     blocks,
+    content: legacyBlocksToPuckData(blocks),
     isSystem: true,
     seoTitle: `${siteConfig.name} — ${siteConfig.tagline}`,
     seoDescription: siteConfig.description,

@@ -10,7 +10,16 @@ describe("pagePathsToRevalidate", () => {
   });
 
   test("trang chủ hệ thống: thêm /", () => {
-    expect(pagePathsToRevalidate("home", { isSystem: true })).toContain("/");
+    expect(pagePathsToRevalidate("home", { isSystem: true })).toEqual([
+      "/admin/pages",
+      "/trang/home",
+      "/",
+    ]);
+  });
+
+  test("trang hệ thống đổi slug: vẫn revalidate path cũ lẫn /", () => {
+    const paths = pagePathsToRevalidate("home", { isSystem: true, previousSlug: "old-home" });
+    expect(paths).toEqual(["/admin/pages", "/trang/home", "/trang/old-home", "/"]);
   });
 
   test("đổi slug: revalidate cả path cũ", () => {

@@ -27,8 +27,9 @@ export async function savePageAction(
     let isSystem = false;
     if (id) {
       const existing = await getPageAdmin(id);
-      previousSlug = existing?.slug;
-      isSystem = existing?.isSystem ?? false;
+      if (!existing) return { ok: false, error: "Trang không tồn tại" };
+      previousSlug = existing.slug;
+      isSystem = existing.isSystem;
       await updatePage(id, parsed.data);
     } else {
       pageId = await createPage(parsed.data);

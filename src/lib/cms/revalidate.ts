@@ -10,6 +10,9 @@ export function pagePathsToRevalidate(
   if (opts.previousSlug && opts.previousSlug !== slug) {
     paths.push(`/trang/${opts.previousSlug}`);
   }
+  // "/" is bound to the system page with slug "home" specifically —
+  // see src/app/page.tsx (getPublishedPageBySlug("home")). Other system
+  // pages must not invalidate the homepage.
   if (opts.isSystem && slug === "home") {
     paths.push("/");
   }

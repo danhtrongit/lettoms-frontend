@@ -12,6 +12,10 @@ import { SectionHeading } from "@/components/common/section-heading";
 
 const VALID: Gender[] = ["nu", "nam"];
 
+// Closed set of genders — unknown slugs must be a hard 404, not a cached
+// soft-404 shell from the dynamic-params fallback render.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return genders.map((g) => ({ gender: g.slug }));
 }

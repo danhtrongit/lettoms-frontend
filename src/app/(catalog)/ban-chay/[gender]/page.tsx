@@ -9,6 +9,9 @@ import { ProductCard } from "@/components/product/product-card";
 
 const VALID: Gender[] = ["nu", "nam"];
 
+// Closed set of genders — unknown slugs must be a hard 404 (see [gender]/page.tsx).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return genders.map((g) => ({ gender: g.slug }));
 }

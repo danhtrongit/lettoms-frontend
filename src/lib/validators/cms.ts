@@ -52,27 +52,6 @@ export const siteSettingsSchema = z.object({
 export type SiteSettingsInput = z.infer<typeof siteSettingsSchema>;
 
 // ---- Page builder ----
-export const pageBlockSchema = z.object({
-  id: z.string(),
-  type: z.string(),
-  props: z.record(z.string(), z.unknown()).default({}),
-});
-
-export const pageInputSchema = z.object({
-  title: z.string().min(1),
-  slug: z
-    .string()
-    .min(1)
-    .regex(/^[a-z0-9-]+$/),
-  status: z.enum(["draft", "published"]).default("draft"),
-  blocks: z.array(pageBlockSchema).default([]),
-  seoTitle: z.string().optional().nullable(),
-  seoDescription: z.string().optional().nullable(),
-  ogImage: z.string().optional().nullable(),
-});
-
-export type PageInput = z.infer<typeof pageInputSchema>;
-
 export const pageSettingsSchema = z.object({
   title: z.string().min(1),
   slug: z

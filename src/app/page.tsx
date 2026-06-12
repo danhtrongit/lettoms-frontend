@@ -7,7 +7,6 @@ import { SectionHeading } from "@/components/common/section-heading";
 import { getFeaturedProducts } from "@/lib/api/products";
 import { getArticles } from "@/lib/api/articles";
 import { getPublishedPageBySlug } from "@/lib/repos/pages.repo";
-import { WidgetRenderer } from "@/components/cms/widget-renderer";
 import { Render } from "@puckeditor/core/rsc";
 import { serverConfig } from "@/lib/builder/config.server";
 
@@ -16,13 +15,6 @@ export default async function HomePage() {
   const homePage = await getPublishedPageBySlug("home");
   if (homePage?.content) {
     return <Render config={serverConfig} data={homePage.content} />;
-  }
-  if (homePage && homePage.blocks.length > 0) {
-    return (
-      <div className="py-2">
-        <WidgetRenderer blocks={homePage.blocks} />
-      </div>
-    );
   }
 
   const [newProducts, bestsellers, onSale, articles] = await Promise.all([

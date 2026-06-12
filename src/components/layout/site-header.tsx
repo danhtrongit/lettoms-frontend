@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { useCart, selectCartCount } from "@/store/cart";
 import { useWishlist } from "@/store/wishlist";
 import { useHydrated } from "@/hooks/use-hydrated";
+import { mainNav } from "@/data/navigation";
+import type { NavItem } from "@/types";
 
 function CountBadge({ count }: { count: number }) {
   const mounted = useHydrated();
@@ -22,7 +24,12 @@ function CountBadge({ count }: { count: number }) {
   );
 }
 
-export function SiteHeader() {
+interface SiteHeaderProps {
+  headerNav?: NavItem[];
+}
+
+export function SiteHeader({ headerNav }: SiteHeaderProps) {
+  const nav = headerNav ?? mainNav;
   const cartCount = useCart(selectCartCount);
   const wishlistCount = useWishlist((s) => s.ids.length);
 
@@ -31,7 +38,7 @@ export function SiteHeader() {
       <div className="container-page flex h-16 items-center gap-2">
         {/* Left zone: hamburger — mobile only, flex-1 to balance the centered logo */}
         <div className="flex flex-1 items-center lg:hidden">
-          <MobileNav />
+          <MobileNav nav={nav} />
         </div>
 
         {/* Logo — centered on mobile (between the two flex-1 zones), left on desktop */}
@@ -40,7 +47,7 @@ export function SiteHeader() {
         </div>
 
         {/* Desktop nav fills the middle on large screens */}
-        <DesktopNav />
+        <DesktopNav nav={nav} />
 
         {/* Right zone: actions — flex-1 on mobile to mirror the left zone */}
         <div className="flex flex-1 items-center justify-end gap-0.5 lg:flex-none">

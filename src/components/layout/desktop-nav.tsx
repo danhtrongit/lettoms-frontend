@@ -11,8 +11,7 @@ import {
   LayoutGridIcon,
   XIcon,
 } from "lucide-react";
-import type { Gender } from "@/types";
-import { mainNav } from "@/data/navigation";
+import type { Gender, NavItem } from "@/types";
 import { getCategoriesByGender } from "@/data/categories";
 import { formatVND } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -230,7 +229,11 @@ function SearchPanel({
   );
 }
 
-export function DesktopNav() {
+interface DesktopNavProps {
+  nav: NavItem[];
+}
+
+export function DesktopNav({ nav }: DesktopNavProps) {
   const [open, setOpen] = React.useState<string | null>(null);
   const [headerBottom, setHeaderBottom] = React.useState(0);
   const rootRef = React.useRef<HTMLDivElement | null>(null);
@@ -290,7 +293,7 @@ export function DesktopNav() {
     >
       {/* Nav triggers */}
       <nav className="flex items-center">
-        {mainNav.map((item) =>
+        {nav.map((item) =>
           item.gender ? (
             <button
               key={item.label}

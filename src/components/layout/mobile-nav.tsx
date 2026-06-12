@@ -3,7 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { MenuIcon, UserIcon, HeartIcon } from "lucide-react";
-import { mainNav, utilityNav } from "@/data/navigation";
+import { utilityNav } from "@/data/navigation";
+import type { NavItem } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -19,7 +20,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export function MobileNav() {
+interface MobileNavProps {
+  nav: NavItem[];
+}
+
+export function MobileNav({ nav }: MobileNavProps) {
   const [open, setOpen] = React.useState(false);
   const close = () => setOpen(false);
 
@@ -41,7 +46,7 @@ export function MobileNav() {
         </SheetHeader>
         <nav className="overflow-y-auto pb-8">
           <Accordion type="single" collapsible className="px-2">
-            {mainNav.map((item) =>
+            {nav.map((item) =>
               item.columns?.length ? (
                 <AccordionItem key={item.label} value={item.label}>
                   <AccordionTrigger className="px-2 text-sm font-medium uppercase">

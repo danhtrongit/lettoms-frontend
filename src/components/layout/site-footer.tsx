@@ -4,8 +4,14 @@ import { footerNav } from "@/data/navigation";
 import { siteConfig } from "@/data/site";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import type { NavColumn } from "@/types";
 
-export function SiteFooter() {
+interface SiteFooterProps {
+  footerColumns?: NavColumn[];
+}
+
+export function SiteFooter({ footerColumns }: SiteFooterProps) {
+  const columns = footerColumns ?? footerNav;
   return (
     <footer className="mt-16 border-t border-white/10 bg-primary text-primary-foreground">
       <div className="container-page py-12">
@@ -65,7 +71,7 @@ export function SiteFooter() {
 
           {/* Link columns */}
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-            {footerNav.map((col) => (
+            {columns.map((col) => (
               <nav key={col.title} aria-label={col.title}>
                 <h3 className="mb-3 text-sm font-semibold">{col.title}</h3>
                 <ul className="space-y-2">

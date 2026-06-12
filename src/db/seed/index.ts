@@ -13,6 +13,7 @@ import {
   articles as staticArticles,
   articleCategories as staticArticleCategories,
 } from "@/data/articles";
+import { mainNav, footerNav } from "@/data/navigation";
 import { siteConfig } from "@/data/site";
 import type { SiteSettings } from "@/db/schema/cms";
 import type { PageBlock } from "@/db/schema/cms";
@@ -360,6 +361,22 @@ async function seedPages() {
   });
 }
 
+async function seedMenus() {
+  // Header: the static non-gender tail links; Footer: converted from footerNav.
+  const headerItems = mainNav
+    .filter((i) => !i.gender)
+    .map((i) => ({ label: i.label, href: i.href }));
+  const footerItems = footerNav.map((col) => ({
+    label: col.title,
+    href: "#",
+    children: col.items.map((it) => ({ label: it.label, href: it.href })),
+  }));
+  await db.insert(s.menus).values([
+    { key: "header", items: headerItems },
+    { key: "footer", items: footerItems },
+  ]);
+}
+
 async function main() {
   console.log("🌱 Seeding Letom's database...");
   await clear();
@@ -385,6 +402,9 @@ async function main() {
 
   await seedPages();
   console.log("  pages: home (system)");
+
+  await seedMenus();
+  console.log("  menus: header (tail links) + footer (columns)");
 
   console.log("✅ Seed complete.");
   process.exit(0);

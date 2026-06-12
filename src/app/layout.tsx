@@ -7,6 +7,7 @@ import { SiteChrome } from "@/components/layout/site-chrome";
 import { siteConfig } from "@/data/site";
 import { organizationJsonLd } from "@/lib/seo";
 import { getSettings } from "@/lib/repos/settings.repo";
+import { getSiteNavigation } from "@/lib/cms/navigation";
 
 const pangea = localFont({
   variable: "--font-sans",
@@ -45,7 +46,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSettings();
+  const [settings, nav] = await Promise.all([getSettings(), getSiteNavigation()]);
   return (
     <html
       lang="vi"
@@ -66,7 +67,7 @@ export default async function RootLayout({
           }}
         />
         <Providers>
-          <SiteChrome announcement={settings.announcementBar}>{children}</SiteChrome>
+          <SiteChrome announcement={settings.announcementBar} nav={nav}>{children}</SiteChrome>
         </Providers>
       </body>
     </html>

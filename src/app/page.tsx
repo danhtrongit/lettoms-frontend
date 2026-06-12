@@ -8,10 +8,15 @@ import { getFeaturedProducts } from "@/lib/api/products";
 import { getArticles } from "@/lib/api/articles";
 import { getPublishedPageBySlug } from "@/lib/repos/pages.repo";
 import { WidgetRenderer } from "@/components/cms/widget-renderer";
+import { Render } from "@puckeditor/core/rsc";
+import { serverConfig } from "@/lib/builder/config.server";
 
 export default async function HomePage() {
   // Prefer the widget-built system page; fall back to the static layout.
   const homePage = await getPublishedPageBySlug("home");
+  if (homePage?.content) {
+    return <Render config={serverConfig} data={homePage.content} />;
+  }
   if (homePage && homePage.blocks.length > 0) {
     return (
       <div className="py-2">

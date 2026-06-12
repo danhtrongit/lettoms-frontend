@@ -6,6 +6,8 @@ import {
 } from "@/lib/repos/pages.repo";
 import { WidgetRenderer } from "@/components/cms/widget-renderer";
 import { buildMetadata } from "@/lib/seo";
+import { Render } from "@puckeditor/core/rsc";
+import { serverConfig } from "@/lib/builder/config.server";
 
 export async function generateStaticParams() {
   const slugs = await listPublishedPageSlugs();
@@ -37,6 +39,10 @@ export default async function CmsPage({
   const page = await getPublishedPageBySlug(slug);
   if (!page) notFound();
 
+  if (page.content) {
+    return <Render config={serverConfig} data={page.content} />;
+  }
+  // Legacy pages not yet migrated
   return (
     <div className="py-2">
       <WidgetRenderer blocks={page.blocks} />

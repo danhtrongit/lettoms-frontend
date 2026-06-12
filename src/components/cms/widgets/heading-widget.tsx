@@ -21,10 +21,12 @@ export function HeadingWidget({
   level?: string;
   align?: string;
 }) {
-  const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4";
+  // Data arrives from a loosely-validated jsonb column — clamp to a real tag.
+  const safeLevel = level in SIZES ? level : "2";
+  const Tag = `h${safeLevel}` as "h1" | "h2" | "h3" | "h4";
   return (
     <section className="container-page py-4">
-      <Tag className={cn("font-semibold tracking-tight", SIZES[level], ALIGN[align])}>
+      <Tag className={cn("font-semibold tracking-tight", SIZES[safeLevel], ALIGN[align])}>
         {text}
       </Tag>
     </section>

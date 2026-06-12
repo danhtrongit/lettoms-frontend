@@ -1,65 +1,76 @@
-import Image from "next/image";
+import { HeroCarousel } from "@/components/home/hero-carousel";
+import { CategoryTiles } from "@/components/home/category-tiles";
+import { FeaturedCollection } from "@/components/home/featured-collection";
+import { PromoBanner } from "@/components/home/promo-banner";
+import { StoryStrip } from "@/components/home/story-strip";
+import { SectionHeading } from "@/components/common/section-heading";
+import { getFeaturedProducts } from "@/lib/api/products";
+import { getArticles } from "@/lib/api/articles";
+import { getPublishedPageBySlug } from "@/lib/repos/pages.repo";
+import { WidgetRenderer } from "@/components/cms/widget-renderer";
 
-export default function Home() {
+export default async function HomePage() {
+  // Prefer the widget-built system page; fall back to the static layout.
+  const homePage = await getPublishedPageBySlug("home");
+  if (homePage && homePage.blocks.length > 0) {
+    return (
+      <div className="py-2">
+        <WidgetRenderer blocks={homePage.blocks} />
+      </div>
+    );
+  }
+
+  const [newProducts, bestsellers, onSale, articles] = await Promise.all([
+    getFeaturedProducts("new", 4),
+    getFeaturedProducts("bestseller", 4),
+    getFeaturedProducts("sale", 4),
+    getArticles(),
+  ]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      <HeroCarousel />
+
+      <section className="container-page py-12">
+        <SectionHeading
+          title="Tìm Theo Danh Mục"
+          description="Khám phá bộ sưu tập cho cả gia đình."
+          align="center"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        <CategoryTiles />
+      </section>
+
+      <FeaturedCollection
+        title="Hàng Mới Về"
+        description="Những thiết kế mới nhất của mùa này."
+        href="/uu-dai/hang-moi"
+        products={newProducts}
+      />
+
+      <PromoBanner
+        title="Ưu Đãi Giá Mới"
+        subtitle="Giảm đến 40% cho các sản phẩm chọn lọc. Số lượng có hạn."
+        cta="Xem khuyến mãi"
+        href="/uu-dai/khuyen-mai"
+        from="#B0202E"
+        to="#7a1620"
+      />
+
+      <FeaturedCollection
+        title="Sản Phẩm Bán Chạy"
+        description="Được khách hàng yêu thích nhất."
+        href="/uu-dai/ban-chay"
+        products={bestsellers}
+      />
+
+      <FeaturedCollection
+        title="Đang Giảm Giá"
+        description="Ưu đãi không thể bỏ lỡ."
+        href="/uu-dai/khuyen-mai"
+        products={onSale}
+      />
+
+      <StoryStrip articles={articles} />
+    </>
   );
 }

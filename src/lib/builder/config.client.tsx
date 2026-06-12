@@ -407,7 +407,7 @@ export const clientConfig: Config = {
         },
         limit: { type: "number", label: "Số sản phẩm", min: 1 },
       },
-      defaultProps: { heading: "Sản phẩm mới", flag: "new", limit: 8 },
+      defaultProps: { heading: "Gợi ý cho bạn", flag: "new", limit: 8 },
       render: ({ heading, flag, limit }) => (
         <ProductCarouselClient heading={heading} flag={flag} limit={limit} />
       ),
@@ -428,7 +428,7 @@ export const clientConfig: Config = {
         },
         limit: { type: "number", label: "Số danh mục", min: 1 },
       },
-      defaultProps: { heading: "Danh mục", gender: "nu", limit: 6 },
+      defaultProps: { heading: "Mua theo danh mục", gender: "nu", limit: 6 },
       render: ({ heading, gender, limit }) => (
         <FeaturedCategoriesClient heading={heading} gender={gender} limit={limit} />
       ),
